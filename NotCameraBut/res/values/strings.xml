@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NotCameraBut</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action">Action…</string>
+    <string name="press_another_key">Press Another Key</string>
+    <string name="key_code">Key Code:</string>
+    <string name="launch_application">Launch Application</string>
+    <string name="application_identifier">Application Identifier:</string>
+    <string name="default_action">Default Action</string>
+    <string name="camera_key_pressed">Camera Key Pressed</string>
+    <string name="camera_key_released">Camera Key Released</string>
+
+</resources>
