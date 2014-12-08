@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -42,7 +43,18 @@ public class MainActivity extends Activity {
 	public boolean dispatchKeyEvent(KeyEvent e) {
 		RadioButton pressAnotherKeyButton = (RadioButton)(findViewById(R.id.radioButton2));
 		RadioButton launchAppButton = (RadioButton)(findViewById(R.id.radioButton3));
-
+		
+		String eventAction="";
+		if(e.getAction()==KeyEvent.ACTION_DOWN){
+			eventAction="Down";
+		}else if(e.getAction()==KeyEvent.ACTION_UP){
+			eventAction="Up";
+		}else if(e.getAction()==KeyEvent.ACTION_MULTIPLE){
+			eventAction="...";
+		}
+		String message = ""+e.getKeyCode()+" "+eventAction;
+		((TextView)findViewById(R.id.message)).setText(message);
+		
 		if(e.getKeyCode()==KeyEvent.KEYCODE_CAMERA){
 			if(pressAnotherKeyButton.isChecked()){
 				KeyEventSender sender = new KeyEventSender();
@@ -56,8 +68,11 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 				return true;
 			}
-			if(!pressAnotherKeyButton.isChecked()&& !launchAppButton.isChecked()){
-				Toast.makeText(this,getString(R.string.camera_key_pressed),Toast.LENGTH_SHORT).show();
+			if(!pressAnotherKeyButton.isChecked() && !launchAppButton.isChecked()){
+				if(e.getAction()==KeyEvent.ACTION_UP){
+					Toast.makeText(this,getString(R.string.camera_key_pressed),Toast.LENGTH_SHORT).show();
+				}
+				return true;
 			}
 		}
 
