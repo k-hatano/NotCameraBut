@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 	public boolean dispatchKeyEvent(KeyEvent e) {
 		RadioButton pressAnotherKeyButton = (RadioButton)(findViewById(R.id.radioButton2));
 		RadioButton launchAppButton = (RadioButton)(findViewById(R.id.radioButton3));
-		
+
 		String eventAction="";
 		if(e.getAction()==KeyEvent.ACTION_DOWN){
 			eventAction="Down";
@@ -54,31 +54,49 @@ public class MainActivity extends Activity {
 		}
 		String message = ""+e.getKeyCode()+" "+eventAction;
 		((TextView)findViewById(R.id.message)).setText(message);
-		
+
 		if(e.getKeyCode()==KeyEvent.KEYCODE_CAMERA){
-			if(pressAnotherKeyButton.isChecked()){
-				KeyEventSender sender = new KeyEventSender();
-				sender.execute(KeyEvent.KEYCODE_VOLUME_DOWN);
-				return true;
-			}
-			if(launchAppButton.isChecked()){
-				Intent intent = new Intent(Intent.ACTION_MAIN);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.addCategory(Intent.CATEGORY_HOME);
-				startActivity(intent);
-				return true;
-			}
-			if(!pressAnotherKeyButton.isChecked() && !launchAppButton.isChecked()){
-				if(e.getAction()==KeyEvent.ACTION_UP){
-					Toast.makeText(this,getString(R.string.camera_key_pressed),Toast.LENGTH_SHORT).show();
+			if(e.getAction()==KeyEvent.ACTION_UP){
+				if(pressAnotherKeyButton.isChecked()){
+					KeyEventSender sender = new KeyEventSender();
+					sender.execute(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
+					return true;
 				}
+				if(launchAppButton.isChecked()){
+					Intent intent = new Intent(Intent.ACTION_MAIN);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.addCategory(Intent.CATEGORY_HOME);
+					startActivity(intent);
+					return true;
+				}
+			}else{
 				return true;
 			}
+		}
+		if(e.getKeyCode()==KeyEvent.KEYCODE_VOLUME_UP){
+			if(e.getAction()==KeyEvent.ACTION_UP){
+				if(pressAnotherKeyButton.isChecked()){
+					KeyEventSender sender = new KeyEventSender();
+					sender.execute(KeyEvent.KEYCODE_MEDIA_NEXT);
+					return true;
+				}
+			}
+			return true;
+		}
+		if(e.getKeyCode()==KeyEvent.KEYCODE_VOLUME_DOWN){
+			if(e.getAction()==KeyEvent.ACTION_UP){
+				if(pressAnotherKeyButton.isChecked()){
+					KeyEventSender sender = new KeyEventSender();
+					sender.execute(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
+					return true;
+				}
+			}
+			return true;
 		}
 
 		return super.dispatchKeyEvent(e);
 	}
-	
+
 	private class KeyEventSender extends AsyncTask<Integer, Object, Object> {
 		@Override
 		protected Object doInBackground(Integer... params) {
