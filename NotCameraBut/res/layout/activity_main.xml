@@ -38,25 +38,39 @@
             android:text="@string/key_code"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <EditText
-            android:id="@+id/editText1"
+        <LinearLayout
+            android:id="@+id/editTextLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textView1"
             android:layout_alignBottom="@+id/textView1"
             android:layout_toRightOf="@+id/textView1"
-            android:ems="10"
-            android:enabled="false" >
+            android:orientation="horizontal" >
 
-            <requestFocus />
-        </EditText>
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:enabled="true" >
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/press"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/press" >
+            </Button>
+        </LinearLayout>
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/radioButton2"
-            android:layout_below="@+id/editText1"
+            android:layout_below="@+id/editTextLayout"
             android:text="@string/launch_application" />
 
         <TextView
@@ -76,7 +90,15 @@
             android:layout_alignBottom="@+id/textView2"
             android:layout_toRightOf="@+id/radioButton2"
             android:ems="10"
-            android:enabled="false" />
+            android:enabled="true" />
+
+        <Button
+            android:id="@+id/start_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText2"
+            android:text="@string/start_activity" >
+        </Button>
     </RadioGroup>
 
     <TextView

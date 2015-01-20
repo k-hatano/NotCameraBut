@@ -12,5 +12,7 @@
     <string name="default_action">Default Action</string>
     <string name="camera_key_pressed">Camera Key Pressed</string>
     <string name="camera_key_released">Camera Key Released</string>
+    <string name="press">Press</string>
+    <string name="start_activity">Recent Apps</string>
 
 </resources>

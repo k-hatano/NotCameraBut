@@ -1,23 +1,34 @@
 package jp.nita.notcamerabut;
 
+import java.lang.reflect.Method;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		Button press=(Button)findViewById(R.id.press);
+		press.setOnClickListener(this);
+		Button startActivity=(Button)findViewById(R.id.start_activity);
+		startActivity.setOnClickListener(this);
 	}
 
 	@Override
@@ -104,6 +115,38 @@ public class MainActivity extends Activity {
 			Instrumentation ist = new Instrumentation();
 			ist.sendKeyDownUpSync(keycode);
 			return null;
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		if(v==findViewById(R.id.press)){
+			int keyCode=0;
+			try{
+				keyCode=Integer.parseInt(((EditText)findViewById(R.id.editText1)).getText().toString());
+			}catch(Exception ignore){
+
+			}
+			KeyEventSender sender = new KeyEventSender();
+			sender.execute(keyCode);
+		}else if(v==findViewById(R.id.start_activity)){
+			try {
+				Class<?> serviceManagerClass = Class.forName("android.os.ServiceManager");
+				Method getService = serviceManagerClass.getMethod("getService", String.class);
+				IBinder retbinder = (IBinder) getService.invoke(serviceManagerClass, "statusbar");
+				Class<?> statusBarClass = Class.forName(retbinder.getInterfaceDescriptor());
+				Object statusBarObject = statusBarClass.getClasses()[0].getMethod("asInterface", IBinder.class).invoke(null, new Object[] { retbinder });
+				if (android.os.Build.VERSION.SDK_INT >= 16) { // android.os.Build.VERSION_CODES.JELLY_BEAN
+					Method preloadRecentApps = statusBarClass.getMethod("preloadRecentApps");
+					preloadRecentApps.setAccessible(true);
+					preloadRecentApps.invoke(statusBarObject);
+				}
+				Method toggleRecentApps = statusBarClass.getMethod("toggleRecentApps");
+				toggleRecentApps.setAccessible(true);
+				toggleRecentApps.invoke(statusBarObject);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
